@@ -5,7 +5,7 @@ import requests
 
 import json
 import utils
-import clickhouse
+#import clickhouse
 import datetime
 import logging
 
@@ -138,7 +138,7 @@ def update_status(api_request):
 
 
 def save_data(api_request, part):
-    '''Loads data chunk from Logs API and saves to ClickHouse'''
+    '''Loads data chunk from Logs API and saves to files'''
     url = '{host}/management/v1/counter/{counter_id}/logrequest/{request_id}/part/{part}/download?oauth_token={token}' \
         .format(
             host=HOST,
@@ -153,27 +153,8 @@ def save_data(api_request, part):
         logger.debug(r.text)
         raise ValueError(r.text)
 
-
-
-    splitted_text = r.text.split('\n')
-    logger.info('### DATA SAMPLE')
-    logger.info('\n'.join(splitted_text[:5]))
-
-    headers_num = len(splitted_text[0].split('\t'))
-    splitted_text_filtered = list(filter(lambda x: len(x.split('\t')) == headers_num, r.text.split('\n')))
-    num_filtered = len(splitted_text) - len(splitted_text_filtered)
-    if num_filtered != 0:
-        logger.warning('%d rows were filtered out' % num_filtered)
-    
-    if len(splitted_text_filtered) > 1:
-        output_data = '\n'.join(splitted_text_filtered) #.encode('utf-8')
-        output_data = output_data.replace(r"\'", "'") # to correct escapes in params
-
-        clickhouse.save_data(api_request.user_request.source,
-                             api_request.user_request.fields,
-                             output_data)
-    else:
-        logger.warning('### No data to upload')
+    with open('output/part_{part}.csv'.format(part=part), 'w') as f:
+        f.write(r.text)
 
     api_request.status = 'saved'
 
