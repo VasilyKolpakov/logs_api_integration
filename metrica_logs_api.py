@@ -61,7 +61,8 @@ def build_user_request(config):
 
     user_request = UserRequest(
         token=config['token'],
-        counter_id=config['counter_id'],
+#        counter_id=config['counter_id'],
+        counter_id=options.counter,
         start_date_str=start_date_str,
         end_date_str=end_date_str,
         source=source,

@@ -44,6 +44,7 @@ def get_cli_options():
     parser.add_argument('-end_date', help = 'End of period')
     parser.add_argument('-mode', help = 'Mode (one of [history, reqular, regular_early])')
     parser.add_argument('-source', help = 'Source (hits or visits)')
+    parser.add_argument('-counter', help = 'counter id', required=True)
     options = parser.parse_args()
     validate_cli_options(options)
     return options
@@ -66,7 +67,7 @@ def get_config():
     with open('./configs/config.json') as input_file:
         config = json.loads(input_file.read())
 
-    assert 'counter_id' in config, 'CounterID must be specified in config'
+    #assert 'counter_id' in config, 'CounterID must be specified in config'
     assert 'token' in config, 'Token must be specified in config'
     assert 'retries' in config, 'Number of retries should be specified in config'
     assert 'retries_delay' in config, 'Delay between retries should be specified in config'
