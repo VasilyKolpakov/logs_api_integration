@@ -45,6 +45,7 @@ def get_cli_options():
     parser.add_argument('-mode', help = 'Mode (one of [history, reqular, regular_early])')
     parser.add_argument('-source', help = 'Source (hits or visits)')
     parser.add_argument('-counter', help = 'counter id', required=True)
+    parser.add_argument('-output', help = 'output dir', required=True)
     options = parser.parse_args()
     validate_cli_options(options)
     return options

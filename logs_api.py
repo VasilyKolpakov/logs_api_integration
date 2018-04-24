@@ -3,6 +3,7 @@ from __future__ import (absolute_import, division,
 
 import requests
 
+import os
 import json
 import utils
 #import clickhouse
@@ -153,7 +154,9 @@ def save_data(api_request, part):
         logger.debug(r.text)
         raise ValueError(r.text)
 
-    with open('output/part_{part}.csv'.format(part=part), 'w') as f:
+    output_dir = utils.get_cli_options().output
+    os.makedirs(output_dir, exist_ok=True)
+    with open('{output}/part_{part}.csv'.format(part=part, output=output_dir), 'w') as f:
         f.write(r.text)
 
     api_request.status = 'saved'
