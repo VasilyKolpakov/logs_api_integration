@@ -53,6 +53,9 @@ def build_user_request(config):
         'Fields must be specified in config'
     fields = config['{source}_fields'.format(source=source)]
 
+    if options.fields:
+        fields = map(lambda s: s.strip(), options.fields.split(','))
+
     # Creating data structure (immutable tuple) with initial user request
     UserRequest = namedtuple(
         "UserRequest",

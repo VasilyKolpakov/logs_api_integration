@@ -46,6 +46,7 @@ def get_cli_options():
     parser.add_argument('-source', help = 'Source (hits or visits)')
     parser.add_argument('-counter', help = 'counter id', required=True)
     parser.add_argument('-output', help = 'output dir', required=True)
+    parser.add_argument('-fields', help = 'fields to load')
     options = parser.parse_args()
     validate_cli_options(options)
     return options
